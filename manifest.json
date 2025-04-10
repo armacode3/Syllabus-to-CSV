@@ -1,0 +1,9 @@
+{
+    "name": "Assignment Maker",
+    "description": "Turn your syllabus into a list of all assignments",
+    "version": "1.0",
+    "manifest_version": 3,
+    "action": {
+        "default_popup": "index.html"
+    }
+}
