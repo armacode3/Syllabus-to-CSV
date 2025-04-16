@@ -2,7 +2,67 @@ import apiKeys from "./hidden.js";
 const mistralApiKey = apiKeys.mistralApiKey;
 const geminiApiKey = apiKeys.geminiApiKey;
 
-document.getElementById('file-upload').addEventListener('change', async(event) => {
+const dragArea = document.querySelector('.drag-area');
+const dragText = document.querySelector('.header');
+
+let fileButton = document.querySelector('.button');
+let fileInput = document.querySelector('input');
+
+dragArea.addEventListener('dragover', (event) => {
+    event.preventDefault();
+    dragText.textContent = 'Release to Upload';
+    dragArea.classList.add('active');
+
+});
+
+dragArea.addEventListener('dragleave', () => {
+    dragText.textContent = 'Drag & Drop';
+    dragArea.classList.remove('active');
+});
+
+dragArea.addEventListener('drop', async(event) => {
+    event.preventDefault();
+    dragText.textContent = 'Drag & Drop';
+    dragArea.classList.remove('active');
+
+    const fileUploaded = event.dataTransfer.files.item(0);
+    if (fileUploaded == null) {
+        console.log("Error");
+        return;
+    }
+
+    try {
+        const form = new FormData();
+        form.append('purpose', 'ocr');
+        form.append('file', new File([fileUploaded], `${fileUploaded.name}`));
+
+        let ocrJson = await PDFToJson(form);
+
+        let markdownExport = "";
+        for (const element of ocrJson.pages) {
+            markdownExport += element.markdown + " ";
+        }
+        console.log(markdownExport);
+
+        const geminiJson = await JsonToCSV(markdownExport);
+
+        if (!geminiJson || !geminiJson.candidates || !geminiJson.candidates[0]) {
+            throw new Error("Invalid response from Gemini API");
+        }
+
+        const geminiResponse = geminiJson.candidates[0].content.parts[0].text;
+
+        createFileAndDownload("assignments.csv", geminiResponse.slice(6).slice(0, -3));
+    } catch (error) {
+        console.error("Error processing file: ", error);
+    }
+});
+
+fileButton.addEventListener('click', () => {
+    fileInput.click();
+});
+
+fileInput.addEventListener('change', async(event) => {
     // Get fileUploaded, returns file object at index 0
     const fileUploaded = event.target.files.item(0);
     if (fileUploaded == null) { // File is empty

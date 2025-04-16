@@ -3,11 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <link 
+        rel="stylesheet" 
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" 
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" 
+        crossorigin="anonymous" 
+        referrerpolicy="no-referrer" 
+    />
     <title>Assignment Maker</title>
 </head>
 <body>
-    <h1>Master List</h1>
-    <input type="file" id="file-upload">
+    <h1>Syllabus to Asignment</h1>
+    <div class="container">
+        <h3>Upload your File</h3>
+        <div class="drag-area">
+            <div class="icon">
+                <i class="fas fa-images"></i>
+            </div>
+
+            <span class="header">Drag & drop</span>
+            <span class="header">or <span class="button">browse</span></span>
+            <input type="file" id="file-upload" hidden>
+            <span class="support">Supports: PDF</span>
+        </div>
+    </div>
     <p>Click here to download you file!</p>
     <script type="module" src="popup.js"></script>
 </body>
