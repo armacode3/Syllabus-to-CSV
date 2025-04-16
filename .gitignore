@@ -1,0 +1,5 @@
+# Ignore API key file
+hidden.js
+
+# Ignore all files in node_modules/
+node_modules/
