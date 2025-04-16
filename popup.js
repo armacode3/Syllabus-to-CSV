@@ -68,7 +68,7 @@ async function PDFToJson(form) {
                 "model": "mistral-ocr-latest",
                 "document": {
                     "type": "document_url",
-                    "document-url": responseJSON.url
+                    "document_url": responseJSON.url
                 },
                 "include_image_base64": true
             }),
